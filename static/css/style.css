@@ -10,3 +10,17 @@
     padding-left: 7px;
     padding-right: 7px;
 }
+
+#error-box {
+    margin: auto;
+    width: 300px;
+}
+
+.remove-button {
+    float: right;
+}
+
+.description {
+    margin-left: 10px;
+    display: inline;
+}
