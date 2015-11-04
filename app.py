@@ -52,8 +52,9 @@ def update():
     conn = sqlite3.connect('todo.db')
     try:
         status = info['status']
+        id = info['id']
         c = conn.cursor()
-        c.execute("UPDATE todos SET status=1 WHERE id=?", (id,))
+        c.execute("UPDATE todos SET status=? WHERE id=?", (status,id))
         conn.commit()
     except:
         return Response(response="db error", status=500)
