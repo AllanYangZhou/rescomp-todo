@@ -8,7 +8,7 @@ $(function() {
       data: JSON.stringify({"description": description}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: function() { console.log("success"); },
+      success: reloadList,
       failure: function() { console.log("failure"); }
     });
   });
@@ -16,6 +16,7 @@ $(function() {
 
 var reloadList = function() {
   var container = $("#task-list");
+  container.empty();
   $.get("/list", function(data) {
     $.each(data.items, function (index, value) {
       var checked = "";
