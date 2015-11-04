@@ -69,16 +69,21 @@ function reloadList() {
   var container = $("#task-list");
   container.empty();
   $.get("/list", function(data) {
-    $.each(data.items, function (index, value) {
-      var checked = "";
-      if (value.status) { checked = "checked "; }
-      var itemString = '<li class="todo-item" ' + 'id="' + value.id
-      + '"><input type="checkbox" value="" ' + checked + '/> '
-      + value.description + '<button class="btn btn-default remove-button" '
-      + 'id="'  + value.id
-      +'"><span class="glyphicon glyphicon-remove"></span></button>' + '</li>';
-      var item = $.parseHTML(itemString);
-      container.append(item);
+    $.each(data.items, function (index, item) {
+      var li = $("<li/>").attr("id", item.id).addClass("todo-item");
+      var checkbox = $("<input/>").attr("type", "checkbox");
+      var del = $("<button/>").addClass("btn btn-default remove-button").attr("id", item.id);
+      var glyph = $("<span/>").addClass("glyphicon glyphicon-remove");
+      del.append(glyph);
+      var descr = $("<div/>").addClass("description").html(item.description);
+      if (item.status) {
+        checkbox.attr("checked", "checked");
+        descr.css("text-decoration", "line-through");
+      }
+      li.append(checkbox);
+      li.append(descr);
+      li.append(del);
+      container.append(li);
     });
     removeHandler();
     updateItem();

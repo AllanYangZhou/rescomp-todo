@@ -19,3 +19,8 @@
 .remove-button {
     float: right;
 }
+
+.description {
+    margin-left: 10px;
+    display: inline;
+}
