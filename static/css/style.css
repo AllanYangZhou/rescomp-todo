@@ -10,3 +10,7 @@
     padding-left: 7px;
     padding-right: 7px;
 }
+
+#error-box {
+    width: 300px;
+}
