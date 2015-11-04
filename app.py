@@ -19,13 +19,16 @@ app.config.update(dict(
 def index():
     return render_template('index.html')
 
-@app.route('/create', methods=['POST'])
+@app.route('/add', methods=['POST'])
 def create():
-    conn = sqlite3.connect('todo.db')
-    c = conn.cursor()
-    c.execute('INSERT INTO todos (description, status) VALUES (?, ?)',
-            (description, status))
+    info = request.json
     try:
+        description = info['description']
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO todos ('description') VALUES (?)",
+                (description))
+    
         c.commit()
     except:
         c.close()
@@ -50,7 +53,19 @@ def list():
 
 @app.route('/update', methods=['POST'])
 def update():
-    pass
+    info = request.json
+    try:
+        status = info['status']
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("UPDATE todos SET status=1 WHERE id=?",
+                    (id))
+        c.commit()
+    except Exception:
+        c.close()
+        return Response(response="db error", status=500)
+    c.close()
+    return Response(response="success", status=200)
 
 @app.route('/delete', methods=['GET'])
 def delete():
@@ -66,7 +81,6 @@ if __name__ == "__main__":
         conn = sqlite3.connect('todo.db')
         with open('schema.sql', 'rt') as f:
             schema = f.read()
-        print schema
         conn.executescript(schema)
         print("created todo.db")
 

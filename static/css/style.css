@@ -1,0 +1,12 @@
+.task-container {
+    margin:0 auto;
+    width: 300px;
+}
+
+.todo-item {
+    border-bottom: 1px solid #ddd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
