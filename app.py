@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, Response
-import os
+import os, sys
 import sqlite3
 
 app = Flask(__name__, static_url_path='/static')
@@ -75,8 +75,12 @@ def delete():
     return result
 
 if __name__ == "__main__":
-    # Create todo.db if non-existent
-    if not os.path.exists(app.root_path + '/todo.db'):
+    restart = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'restart':
+            restart = True
+    # Create todo.db if non-existent or if args provided
+    if not os.path.exists(app.root_path + '/todo.db') or restart:
         conn = sqlite3.connect('todo.db')
         with open('schema.sql', 'rt') as f:
             schema = f.read()
