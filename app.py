@@ -11,16 +11,20 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 
-@app.route("/create", methods=['POST'])
+@app.route('/create', methods=['POST'])
 def create():
     db = get_db()
     cur = db.execute('INSERT INTO ')
     entries = cur.fetchall()
     return render_template('show_entries.html', entries=entries)
+
+@app.route('/read', methods=['GET'])
+def read():
+    pass
 
 
 if __name__ == "__main__":
@@ -35,3 +39,11 @@ if __name__ == "__main__":
 
     # Run the app
     app.run(debug=True)
+
+@app.route('/update', methods=['POST'])
+def update():
+    pass
+
+@app.route('/delete', methods=['DELETE'])
+def delete():
+    pass
