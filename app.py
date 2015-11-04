@@ -35,8 +35,8 @@ def index():
 def create():
     conn = sqlite3.connect('todo.db')
     c = conn.cursor()
-    c.execute("INSERT INTO todos ('description', 'status') VALUES (?, ?)",
-                (description, status))
+    c.execute("INSERT INTO todos ('description') VALUES (?)",
+                (description))
     try:
         c.commit()
     except Exception:
