@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, jsonify, Response
 import os
 import sqlite3
-from datetime import datetime
-
-from models import TodoItem
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -22,19 +19,20 @@ def index():
 @app.route('/add', methods=['POST'])
 def create():
     info = request.json
+    conn = sqlite3.connect('todo.db')
     try:
         description = info['description']
-        conn = sqlite3.connect('todo.db')
         c = conn.cursor()
-        c.execute("INSERT INTO todos ('description') VALUES (?)",
-                (description))
-    
-        c.commit()
+        c.execute("INSERT INTO todos ('description') VALUES (?)", (description,))
+        c.execute("SELECT created_date FROM todos WHERE id=last_insert_rowid()")
+        conn.commit()
+        created = c.fetchone()
+        created = created[0]
     except:
-        c.close()
+        conn.close()
         return Response(response="db error", status=500)
-    c.close()
-    return Response(response="success", status=200)
+    conn.close()
+    return jsonify({'created' : created})
 
 @app.route('/list', methods=['GET'])
 def list():
