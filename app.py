@@ -26,12 +26,9 @@ def create():
         c.execute("INSERT INTO todos ('description') VALUES (?)", (description,))
         c.execute("SELECT created_date FROM todos WHERE id=last_insert_rowid()")
         conn.commit()
-        created = c.fetchone()
-        created = created[0]
+        created = c.fetchone()[0]
     except:
-        conn.close()
         return Response(response="db error", status=500)
-    conn.close()
     return jsonify({'created' : created})
 
 @app.route('/list', methods=['GET'])
@@ -48,26 +45,22 @@ def list():
             result = jsonify(items=items)
         except Exception as e:
             result = Response(response="db error", status=500)
-        finally:
-            c.close()
 
     return result
 
 @app.route('/update', methods=['POST'])
 def update():
     info = request.json
+    conn = sqlite3.connect('todo.db')
     try:
         status = info['status']
-        conn = sqlite3.connect('todo.db')
         c = conn.cursor()
-        c.execute("UPDATE todos SET status=1 WHERE id=?",
-                    (id,))
-        c.commit()
+        c.execute("UPDATE todos SET status=1 WHERE id=?", (id,))
+        conn.commit()
     except:
-        c.close()
         return Response(response="db error", status=500)
-    c.close()
-    return Response(response="success", status=200)
+
+    return Response(response="ok", status=200)
 
 @app.route('/delete', methods=['DELETE'])
 def delete():
@@ -78,8 +71,6 @@ def delete():
             result = Response(response='ok', status=200)
         except:
             result = Response(response='db error', status=500)
-        finally:
-            c.close()
 
     return result
 
