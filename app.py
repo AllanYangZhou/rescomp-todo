@@ -1,4 +1,7 @@
-from flask import Flask, render_template
+import os
+
+from flask import Flask, render_template, request
+
 app = Flask(__name__, static_url_path='/static')
 
 app.config.update(dict(
@@ -28,14 +31,18 @@ def read():
 def update():
     pass
 
-@app.route('/delete', methods=['DELETE'])
+@app.route('/delete', methods=['GET'])
 def delete():
-    pass
+    try:
+        id = request.args['id']
+        return id
+    except:
+        return 'Illegal arguments.'
 
 if __name__ == '__main__':
-    if (!os.path.exists('/this/is/a/dir'))
-    con = sqlite3.connect('sqlite.db')
-    with open('dump.sql', 'w') as f:
-        for line in con.iterdump():
-            f.write('%s\n' % line)
+    #if (!os.path.exists('/this/is/a/dir'))
+    #con = sqlite3.connect('sqlite.db')
+    #with open('dump.sql', 'w') as f:
+    #    for line in con.iterdump():
+    #        f.write('%s\n' % line)
     app.run(debug=True)
