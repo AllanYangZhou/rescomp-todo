@@ -1,7 +1,6 @@
-from flask import Flask, render_template, json, request, Response
+from flask import Flask, render_template, request, jsonify, Response
 import os
 import sqlite3
-from datetime import datetime
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -13,20 +12,6 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 
-class TodoItem:
-    def __init__(self, id, description, status, created_date):
-        self.id = id
-        self.description = description
-        self.status = status
-        self.created_date = created_date
-
-    def to_json(self):
-        return jsonify(
-                id=self.id,
-                description=self.description,
-                status=self.status,
-                created_date=self.created_date)
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -34,29 +19,39 @@ def index():
 @app.route('/add', methods=['POST'])
 def create():
     info = request.json
+    conn = sqlite3.connect('todo.db')
     try:
         description = info['description']
-        conn = sqlite3.connect('todo.db')
         c = conn.cursor()
-        c.execute("INSERT INTO todos ('description') VALUES (?)",
-                (description))
-    
-        c.commit()
-    except Exception:
-        c.close()
+        c.execute("INSERT INTO todos ('description') VALUES (?)", (description,))
+        c.execute("SELECT created_date FROM todos WHERE id=last_insert_rowid()")
+        conn.commit()
+        created = c.fetchone()
+        created = created[0]
+    except:
+        conn.close()
         return Response(response="db error", status=500)
-    c.close()
-    return Response(response="success", status=200)
-
+    conn.close()
+    return jsonify({'created' : created})
 
 @app.route('/list', methods=['GET'])
 def list():
-    pass
+    with sqlite3.connect('todo.db') as conn:
+        try:
+            c = conn.cursor()
+            c.execute('SELECT id, description, status, created_date FROM todos')
+            items = [{ 'id':           id,
+                       'description':  description,
+                       'status':       status,
+                       'created_date': created_date }
+                     for id, description, status, created_date in c.fetchall()]
+            result = jsonify(items=items)
+        except Exception as e:
+            result = Response(response="db error", status=500)
+        finally:
+            c.close()
 
-@app.route('/read', methods=['GET'])
-def read():
-    item = TodoItem(117, 'John', False, datetime.now())
-    return item.to_json()
+    return result
 
 @app.route('/update', methods=['POST'])
 def update():
@@ -66,21 +61,27 @@ def update():
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
         c.execute("UPDATE todos SET status=1 WHERE id=?",
-                    (id))
+                    (id,))
         c.commit()
-    except Exception:
+    except:
         c.close()
         return Response(response="db error", status=500)
     c.close()
     return Response(response="success", status=200)
 
-@app.route('/delete', methods=['GET'])
+@app.route('/delete', methods=['DELETE'])
 def delete():
-    try:
-        id = request.args['id']
-        return id
-    except:
-        return 'Illegal arguments.'
+    with sqlite3.connect('todo.db') as conn:
+        try:
+            c = conn.cursor()
+            c.execute('DELETE FROM todos WHERE id = ?', (request.json['id'],))
+            result = Response(response='ok', status=200)
+        except:
+            result = Response(response='db error', status=500)
+        finally:
+            c.close()
+
+    return result
 
 if __name__ == "__main__":
     # Create todo.db if non-existent
