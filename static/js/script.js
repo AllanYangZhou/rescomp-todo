@@ -29,12 +29,13 @@ var reloadList = function() {
       var item = $.parseHTML(itemString);
       container.append(item);
     });
+    removeHandler();
   });
 };
 
-$(function() {
-    $("a").on("click", function() {
-        var id = $(this).parent().attr("id")
+var removeHandler = function() {
+    $(".remove-button").on("click", function() {
+        var id = this.id;
         $.ajax({
             url: "/delete",
             type: "DELETE",
@@ -45,6 +46,6 @@ $(function() {
             failure: function() { console.log("failure"); }
         });
     });
-});
+};
 
 $(window).load(reloadList);
