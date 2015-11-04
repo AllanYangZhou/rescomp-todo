@@ -26,12 +26,9 @@ def create():
         c.execute("INSERT INTO todos ('description') VALUES (?)", (description,))
         c.execute("SELECT created_date FROM todos WHERE id=last_insert_rowid()")
         conn.commit()
-        created = c.fetchone()
-        created = created[0]
+        created = c.fetchone()[0]
     except:
-        conn.close()
         return Response(response="db error", status=500)
-    conn.close()
     return jsonify({'created' : created})
 
 @app.route('/list', methods=['GET'])
@@ -45,29 +42,23 @@ def list():
                        'status':       status,
                        'created_date': created_date }
                      for id, description, status, created_date in c.fetchall()]
-            result = jsonify(items=items)
-        except Exception as e:
-            result = Response(response="db error", status=500)
-        finally:
-            c.close()
-
-    return result
+            return jsonify(items=items)
+        except:
+            return Response(response="db error", status=500)
 
 @app.route('/update', methods=['POST'])
 def update():
     info = request.json
+    conn = sqlite3.connect('todo.db')
     try:
         status = info['status']
-        conn = sqlite3.connect('todo.db')
         c = conn.cursor()
-        c.execute("UPDATE todos SET status=1 WHERE id=?",
-                    (id,))
-        c.commit()
+        c.execute("UPDATE todos SET status=1 WHERE id=?", (id,))
+        conn.commit()
     except:
-        c.close()
         return Response(response="db error", status=500)
-    c.close()
-    return Response(response="success", status=200)
+
+    return Response(response="ok", status=200)
 
 @app.route('/delete', methods=['DELETE'])
 def delete():
@@ -75,13 +66,9 @@ def delete():
         try:
             c = conn.cursor()
             c.execute('DELETE FROM todos WHERE id = ?', (request.json['id'],))
-            result = Response(response='ok', status=200)
+            return Response(response='ok', status=200)
         except:
-            result = Response(response='db error', status=500)
-        finally:
-            c.close()
-
-    return result
+            return Response(response='db error', status=500)
 
 if __name__ == "__main__":
     # Create todo.db if non-existent
