@@ -2,10 +2,19 @@
 $(function() {
   $("add").on("click", function() {
     var description = $("#todo_input").val();
-    $.post("/add", { "description": description },
-      function(data) {
-        console.log("Success");
-      });
+    // $.post("/add", { "description": description },
+    //   function(data) {
+    //     console.log("Success");
+    //   });
+    $.ajax({
+        url: "/add",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            console.log("Success");
+        },
+        data: {"description": description}
+    });
   });
 });
 

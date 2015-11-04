@@ -39,14 +39,18 @@ def list():
     with sqlite3.connect('todo.db') as conn:
         try:
             c = conn.cursor()
-            c.execute('SELECT description, status, created_date FROM todos')
-            items = [{'description': description, 'status': status, 'created_date': created_date}
-                     for description, status, created_date in c.fetchall()]
+            c.execute('SELECT id, description, status, created_date FROM todos')
+            items = [{ 'id':           id,
+                       'description':  description,
+                       'status':       status,
+                       'created_date': created_date }
+                     for id, description, status, created_date in c.fetchall()]
             result = jsonify(items=items)
         except Exception as e:
             result = Response(response="db error", status=500)
         finally:
             c.close()
+
     return result
 
 @app.route('/update', methods=['POST'])
@@ -57,21 +61,27 @@ def update():
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
         c.execute("UPDATE todos SET status=1 WHERE id=?",
-                    (id))
+                    (id,))
         c.commit()
-    except Exception:
+    except:
         c.close()
         return Response(response="db error", status=500)
     c.close()
     return Response(response="success", status=200)
 
-@app.route('/delete', methods=['GET'])
+@app.route('/delete', methods=['DELETE'])
 def delete():
-    try:
-        id = request.args['id']
-        return id
-    except:
-        return 'bad arguments'
+    with sqlite3.connect('todo.db') as conn:
+        try:
+            c = conn.cursor()
+            c.execute('DELETE FROM todos WHERE id = ?', (request.json['id'],))
+            result = Response(response='ok', status=200)
+        except:
+            result = Response(response='db error', status=500)
+        finally:
+            c.close()
+
+    return result
 
 if __name__ == "__main__":
     # Create todo.db if non-existent
