@@ -30,3 +30,12 @@ var reloadList = function() {
 };
 
 $(window).load(reloadList);
+
+var delete = function(url, data, callback, type) {
+   return  $.ajax({
+        url: url,
+        type: "DELETE",
+        data: data,
+        contentType: type
+    });
+};
