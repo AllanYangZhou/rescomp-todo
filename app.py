@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, json, request, Response
 import os
 import sqlite3
 app = Flask(__name__, static_url_path="/static")
@@ -17,10 +17,18 @@ def index():
 
 @app.route('/create', methods=['POST'])
 def create():
-    db = get_db()
-    cur = db.execute('INSERT INTO ')
-    entries = cur.fetchall()
-    return render_template('show_entries.html', entries=entries)
+    conn = sqlite3.connect('todo.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO todos ('description', 'status') VALUES (?, ?)",
+                (description, status))
+    try:
+        c.commit()
+    except Exception e:
+        c.close()
+        return Response(response="db error", status=500)
+    c.close()
+    return Response(response="success", status=200)
+
 
 @app.route('/read', methods=['GET'])
 def read():
