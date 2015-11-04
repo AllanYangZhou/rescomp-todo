@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+import os
+import sqlite3
 app = Flask(__name__, static_url_path="/static")
 
 app.config.update(dict(
@@ -22,9 +24,14 @@ def create():
 
 
 if __name__ == "__main__":
-    if (!os.path.exists('/this/is/a/dir'))
-    con = sqlite3.connect('sqlite.db')
-    with open('dump.sql', 'w') as f:
-        for line in con.iterdump():
-            f.write('%s\n' % line)
+    # Create todo.db if non-existent
+    if not os.path.exists(app.root_path + '/todo.db'):
+        conn = sqlite3.connect('todo.db')
+        with open('schema.sql', 'rt') as f:
+            schema = f.read()
+        print schema
+        conn.executescript(schema)
+        print("created todo.db")
+
+    # Run the app
     app.run(debug=True)
