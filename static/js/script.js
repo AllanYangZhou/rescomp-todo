@@ -23,7 +23,9 @@ var reloadList = function() {
       if (value.status) { checked = "checked "; }
       var itemString = '<li class="todo-item" ' + 'id="' + value.id
       + '"><input type="checkbox" value="" ' + checked + '/> '
-      + value.description + '</li>';
+      + value.description + '<button class="btn btn-default remove-button" '
+      + 'id="'  + value.id
+      +'"><span class="glyphicon glyphicon-remove"></span></button>' + '</li>';
       var item = $.parseHTML(itemString);
       container.append(item);
     });
