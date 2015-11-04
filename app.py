@@ -50,8 +50,6 @@ def list():
             result = jsonify(items=items)
         except Exception as e:
             result = Response(response="db error", status=500)
-        finally:
-            c.close()
 
     return result
 
@@ -80,8 +78,6 @@ def delete():
             result = Response(response='ok', status=200)
         except:
             result = Response(response='db error', status=500)
-        finally:
-            c.close()
 
     return result
 
