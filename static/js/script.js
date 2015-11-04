@@ -4,6 +4,32 @@ $(function (){
     reloadList();
 });
 
+//update
+function updateItem() {
+    $("li").find("input").on("click", function() {
+        var id = this.parentNode.id;
+        var status = this.checked ? 1 : 0;
+        $.ajax({
+            url: "/update",
+            type: "POST",
+            data: JSON.stringify({"id": id, "status": status}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            timeout: 2000,
+            success: function() {
+                reloadList();
+                clearErrorBox();
+                console.log("Successfully update item: " + id);
+            },
+            error: function(e, msg, type) {
+                message = "Failed to update item '"+id+"' - "+msg
+                addError(message)
+                console.log(message);
+            }
+        })
+    });
+}
+
 // deal with an "Add Item" button click
 $(function() {
   $("#add").on("click", function() {
@@ -13,7 +39,7 @@ $(function() {
       type: "POST",
       data: JSON.stringify({"description": description}),
       contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      dataType: "",
       timeout: 2000,
       success: function() {
           reloadList();
@@ -55,6 +81,7 @@ function reloadList() {
       container.append(item);
     });
     removeHandler();
+    updateItem();
   });
 }
 
