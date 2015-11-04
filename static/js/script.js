@@ -16,3 +16,12 @@ $(function() {
 
 var reloadList = function() {
 };
+
+$.delete = function(url, data, callback, type) {
+   return  $.ajax({
+        url: url,
+        type: "DELETE",
+        data: data,
+        contentType: type
+    });
+}
