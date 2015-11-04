@@ -8,8 +8,10 @@ $(function() {
       data: JSON.stringify({"description": description}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: function() { console.log("success"); },
-      failure: function() { console.log("failure"); }
+      success: function() { console.log("Successfully added item: " + description); },
+      failure: function(e) {
+          console.log("Failed to add item '"+description+"' - " + e);
+      }
     });
   });
 });
