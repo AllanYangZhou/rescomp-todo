@@ -11,6 +11,11 @@
     padding-right: 7px;
 }
 
+#error-box {
+    margin: auto;
+    width: 300px;
+}
+
 .remove-button {
     float: right;
 }

@@ -1,3 +1,9 @@
+// On page load
+$(function (){
+    $("#error-box").hide();
+    reloadList();
+});
+
 // deal with an "Add Item" button click
 $(function() {
   $("#add").on("click", function() {
@@ -8,13 +14,32 @@ $(function() {
       data: JSON.stringify({"description": description}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: reloadList,
-      failure: function() { console.log("failure"); }
+      timeout: 2000,
+      success: function() {
+          reloadList();
+          clearErrorBox();
+          console.log("Successfully added item: " + description);
+      },
+      error: function(e, msg, type) {
+          message = "Failed to add item '"+description+"' - "+msg
+          addError(message)
+          console.log(message);
+      }
     });
   });
 });
 
-var reloadList = function() {
+function addError(msg) {
+    $("#error-box").append(msg);
+    $("#error-box").show();
+}
+
+function clearErrorBox() {
+    $("#error-box").hide();
+    $("#error-box").html("");
+}
+
+function reloadList() {
   var container = $("#task-list");
   container.empty();
   $.get("/list", function(data) {
@@ -31,9 +56,18 @@ var reloadList = function() {
     });
     removeHandler();
   });
-};
+}
 
-var removeHandler = function() {
+function deleteItem(url, data, callback, type) {
+   return  $.ajax({
+        url: url,
+        type: "DELETE",
+        data: data,
+        contentType: type
+    });
+}
+
+function removeHandler() {
     $(".remove-button").on("click", function() {
         var id = this.id;
         $.ajax({
@@ -46,6 +80,4 @@ var removeHandler = function() {
             failure: function() { console.log("failure"); }
         });
     });
-};
-
-$(window).load(reloadList);
+}
