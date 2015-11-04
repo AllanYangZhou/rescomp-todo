@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-app = Flask(__name__, static_url_path="/static")
+app = Flask(__name__, static_url_path='/static')
 
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'todo.db'),
@@ -9,19 +9,30 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 
-@app.route("/create", methods=['POST'])
+@app.route('/create', methods=['POST'])
 def create():
     db = get_db()
     cur = db.execute('INSERT INTO ')
     entries = cur.fetchall()
     return render_template('show_entries.html', entries=entries)
 
+@app.route('/read', methods=['GET'])
+def read():
+    pass
 
-if __name__ == "__main__":
+@app.route('/update', methods=['POST'])
+def update():
+    pass
+
+@app.route('/delete', methods=['DELETE'])
+def delete():
+    pass
+
+if __name__ == '__main__':
     if (!os.path.exists('/this/is/a/dir'))
     con = sqlite3.connect('sqlite.db')
     with open('dump.sql', 'w') as f:
