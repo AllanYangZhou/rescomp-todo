@@ -23,7 +23,7 @@ def create():
                 (description, status))
     try:
         c.commit()
-    except Exception e:
+    except Exception:
         c.close()
         return Response(response="db error", status=500)
     c.close()
