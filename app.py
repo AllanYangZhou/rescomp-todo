@@ -33,11 +33,14 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def create():
-    conn = sqlite3.connect('todo.db')
-    c = conn.cursor()
-    c.execute("INSERT INTO todos ('description') VALUES (?)",
-                (description))
+    info = request.json
     try:
+        description = info['description']
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO todos ('description') VALUES (?)",
+                (description))
+    
         c.commit()
     except Exception:
         c.close()
@@ -57,11 +60,13 @@ def read():
 
 @app.route('/update', methods=['POST'])
 def update():
-    conn = sqlite3.connect('todo.db')
-    c = conn.cursor()
-    c.execute("UPDATE todos SET status=1 WHERE id=?",
-                (id))
+    info = request.json
     try:
+        status = info['status']
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("UPDATE todos SET status=1 WHERE id=?",
+                    (id))
         c.commit()
     except Exception:
         c.close()
