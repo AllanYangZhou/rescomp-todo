@@ -1,6 +1,7 @@
 // On page load
 $(function (){
     $("#error-box").hide();
+    reloadList();
 });
 
 // deal with an "Add Item" button click
@@ -47,14 +48,14 @@ function reloadList() {
       if (value.status) { checked = "checked "; }
       var itemString = '<li class="todo-item" ' + 'id="' + value.id
       + '"><input type="checkbox" value="" ' + checked + '/> '
-      + value.description + '</li>';
+      + value.description + '<button class="btn btn-default remove-button" '
+      + 'id="'  + value.id
+      +'"><span class="glyphicon glyphicon-remove"></span></button>' + '</li>';
       var item = $.parseHTML(itemString);
       container.append(item);
     });
   });
 }
-
-$(window).load(reloadList);
 
 function deleteItem(url, data, callback, type) {
    return  $.ajax({
@@ -64,3 +65,18 @@ function deleteItem(url, data, callback, type) {
         contentType: type
     });
 }
+
+$(function() {
+    $("a").on("click", function() {
+        var id = $(this).parent().attr("id")
+        $.ajax({
+            url: "/delete",
+            type: "DELETE",
+            data: JSON.stringify({"id": id}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function() { console.log("success"); },
+            failure: function() { console.log("failure"); }
+        });
+    });
+});

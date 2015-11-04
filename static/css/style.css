@@ -14,3 +14,7 @@
 #error-box {
     width: 300px;
 }
+
+.remove-button {
+    float: right;
+}
