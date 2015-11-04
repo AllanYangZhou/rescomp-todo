@@ -1,11 +1,16 @@
 // deal with an "Add Item" button click
 $(function() {
-  $("add").on("click", function() {
+  $("#add").on("click", function() {
     var description = $("#todo_input").val();
-    $.post("/add", { "description": description },
-      function(data) {
-        console.log("Success");
-      });
+    $.ajax({
+      url: "/add",
+      type: "POST",
+      data: JSON.stringify({"description": description}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function() { console.log("success"); },
+      failure: function() { console.log("failure"); }
+    });
   });
 });
 
