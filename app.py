@@ -1,7 +1,5 @@
-from flask import Flask, render_template, g
-import sqlite3, os
-
-app = Flask(__name__)
+from flask import Flask, render_template
+app = Flask(__name__, static_url_path="/static")
 
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'todo.db'),
