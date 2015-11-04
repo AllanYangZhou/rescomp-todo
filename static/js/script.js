@@ -45,6 +45,7 @@ $(function() {
           reloadList();
           clearErrorBox();
           console.log("Successfully added item: " + description);
+          $("#todo_input").val("");
       },
       error: function(e, msg, type) {
           message = "Failed to add item '"+description+"' - "+msg
@@ -72,7 +73,7 @@ function reloadList() {
     $.each(data.items, function (index, item) {
       var li = $("<li/>").attr("id", item.id).addClass("todo-item");
       var checkbox = $("<input/>").attr("type", "checkbox");
-      var del = $("<button/>").addClass("btn btn-default remove-button").attr("id", item.id);
+      var del = $("<button/>").addClass("btn btn-default remove-button");
       var glyph = $("<span/>").addClass("glyphicon glyphicon-remove");
       del.append(glyph);
       var descr = $("<div/>").addClass("description").html(item.description);
@@ -101,7 +102,7 @@ function deleteItem(url, data, callback, type) {
 
 function removeHandler() {
     $(".remove-button").on("click", function() {
-        var id = this.id;
+        var id = this.parentNode.id;
         $.ajax({
             url: "/delete",
             type: "DELETE",
@@ -113,3 +114,9 @@ function removeHandler() {
         });
     });
 }
+
+$(document).bind('keypress', '#add', function(args) {
+  if (args.keyCode == 13) {
+    $('#add').click();
+  }
+});
