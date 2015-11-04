@@ -41,8 +41,8 @@ var removeHandler = function() {
             type: "DELETE",
             data: JSON.stringify({"id": id}),
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function() { console.log("success"); },
+            dataType: "html",
+            success: reloadList,
             failure: function() { console.log("failure"); }
         });
     });
