@@ -22,7 +22,7 @@ function updateItem() {
                 console.log("Successfully update item: " + id);
             },
             error: function(e, msg, type) {
-                message = "Failed to update item '"+id+"' - "+msg
+                message = "Failed to update item '"+id+"': "+msg
                 addError(message)
                 console.log(message);
             }
@@ -47,7 +47,7 @@ $(function() {
           console.log("Successfully added item: " + description);
       },
       error: function(e, msg, type) {
-          message = "Failed to add item '"+description+"' - "+msg
+          message = "Failed to add item '"+description+"': "+msg
           addError(message)
           console.log(message);
       }
@@ -56,7 +56,8 @@ $(function() {
 });
 
 function addError(msg) {
-    $("#error-box").append(msg);
+    item = $("<p/>").html(msg);
+    $("#error-box").append(item);
     $("#error-box").show();
 }
 
@@ -90,15 +91,6 @@ function reloadList() {
   });
 }
 
-function deleteItem(url, data, callback, type) {
-   return  $.ajax({
-        url: url,
-        type: "DELETE",
-        data: data,
-        contentType: type
-    });
-}
-
 function removeHandler() {
     $(".remove-button").on("click", function() {
         var id = this.id;
@@ -108,8 +100,15 @@ function removeHandler() {
             data: JSON.stringify({"id": id}),
             contentType: "application/json; charset=utf-8",
             dataType: "html",
-            success: reloadList,
-            failure: function() { console.log("failure"); }
+            success: function() {
+                reloadList();
+                clearErrorBox();
+            },
+            error: function(e, msg, type) {
+                message = "Failed to remove item '"+id+"': "+msg
+                addError(message)
+                console.log(message);
+            }
         });
     });
 }
