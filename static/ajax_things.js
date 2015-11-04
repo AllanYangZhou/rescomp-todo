@@ -1,9 +1,11 @@
-<script>
-$(document).ready(function(){
-    $("").click(function(){
-        $.ajax({url: "demo_test.txt", success: function(result){
-            $("#div1").html(result);
-        }});
-    });
-});
-</script>
+// deal with an "Add Item" button click
+$(function() {
+  $("add").on("click", function() {
+    var todo_item = $("#todo_input").val();
+    $.get("callback function",
+      {"todo_item": todo_item},
+      function(data) {
+        // do something with the data returned
+      })
+  })
+})
