@@ -54,6 +54,7 @@ function reloadList() {
       var item = $.parseHTML(itemString);
       container.append(item);
     });
+    removeHandler();
   });
 }
 
@@ -66,9 +67,9 @@ function deleteItem(url, data, callback, type) {
     });
 }
 
-$(function() {
-    $("a").on("click", function() {
-        var id = $(this).parent().attr("id")
+function removeHandler() {
+    $(".remove-button").on("click", function() {
+        var id = this.id;
         $.ajax({
             url: "/delete",
             type: "DELETE",
@@ -79,4 +80,4 @@ $(function() {
             failure: function() { console.log("failure"); }
         });
     });
-});
+}
