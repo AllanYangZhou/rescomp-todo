@@ -22,7 +22,7 @@ A robust development environment makes development of any project much simpler i
 
 One of the primary difficulties developers encounter when working on multiple projects is conflicting dependencies. I may have an app that depends on a legacy version of Flask, for instance, but want to start a new app with the latest version. One extremely simple solution for managing project requirements is called a virtualenv. Virtualenvs handle things like project specific packages or environment variables, so that separate apps in separate virtualenvs can run side by side.
 
-To prepare your environment, do the following:
+To prepare your environment, do the following (If you already have pip installed, you should skip the first two steps):
 ```
 curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
 python get-pip.py
@@ -34,8 +34,10 @@ cd rescomp-todo
 pip install -r requirements.txt
 ```
  (you can download the file with `wget https://bootstrap.pypa.io/get-pip.py` if your system doesn't have curl)
+ 
+ You can check to see what packages you have installed in your virtualenv with `pip freeze`.
 
-`curl` is a command which simply downloads a web resource. By default, curl will print the output to STDOUT (your terminal). You can't manipulate this output - it simply appears on your screen. We use the =>= character to write the output of curl to a file, get-pip.py.
+`curl` is a command which simply downloads a web resource. By default, curl will print the output to STDOUT (your terminal). You can't manipulate this output - it simply appears on your screen. We use the `>` character to write the output of curl to a file, get-pip.py.
 
 `python get-pip.py` is a script which installs pip, the python package manager. We'll use pip to manage python dependencies. `pip install virtualenv` will install the virtualenv framework, which will allow you to create a project environment for your website without installing anything globally on your system.
 
