@@ -72,10 +72,12 @@ def delete():
             return Response(response='db error', status=500)
 
 if __name__ == "__main__":
+    # "python app.py restart" to delete db
     restart = False
     if len(sys.argv) > 1:
         if sys.argv[1] == 'restart':
             restart = True
+
     # Create todo.db if non-existent or if args provided
     if not os.path.exists(app.root_path + '/todo.db') or restart:
         conn = sqlite3.connect('todo.db')
