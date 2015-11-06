@@ -18,6 +18,7 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def create():
+    """ LOOK AT THIS EXAMPLE """
     info = request.json
     conn = sqlite3.connect('todo.db')
     try:
@@ -31,45 +32,21 @@ def create():
         return Response(response="db error", status=500)
     return jsonify({'created' : created})
 
+
 @app.route('/list', methods=['GET'])
 def list():
-    with sqlite3.connect('todo.db') as conn:
-        try:
-            c = conn.cursor()
-            c.execute('SELECT id, description, status, created_date FROM todos')
-            items = [{ 'id':           id,
-                       'description':  description,
-                       'status':       status,
-                       'created_date': created_date }
-                     for id, description, status, created_date in c.fetchall()]
-            return jsonify(items=items)
-        except:
-            return Response(response="db error", status=500)
+    """ FILL IN THIS FUNCTION """
+    pass
 
 @app.route('/update', methods=['POST'])
 def update():
-    info = request.json
-    conn = sqlite3.connect('todo.db')
-    try:
-        status = info['status']
-        id = info['id']
-        c = conn.cursor()
-        c.execute("UPDATE todos SET status=? WHERE id=?", (status,id))
-        conn.commit()
-    except:
-        return Response(response="db error", status=500)
-
-    return Response(response="ok", status=200)
+    """ FILL IN THIS FUNCTION """
+    pass
 
 @app.route('/delete', methods=['DELETE'])
 def delete():
-    with sqlite3.connect('todo.db') as conn:
-        try:
-            c = conn.cursor()
-            c.execute('DELETE FROM todos WHERE id = ?', (request.json['id'],))
-            return Response(response='ok', status=200)
-        except:
-            return Response(response='db error', status=500)
+    """ FILL IN THIS FUNCTION """
+    pass
 
 if __name__ == "__main__":
     # "python app.py restart" to delete db
