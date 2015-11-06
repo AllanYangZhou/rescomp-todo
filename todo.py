@@ -36,16 +36,23 @@ def create():
 @app.route('/list', methods=['GET'])
 def list():
     """ FILL IN THIS FUNCTION """
+    """ This method returns a list of all the todos stored in the database """
     pass
 
 @app.route('/update', methods=['POST'])
 def update():
     """ FILL IN THIS FUNCTION """
+    """ This method updates the status of a todo in the database """
+    """ It receives a todo id, and a status (0 or 1) and updates the corresponding
+    information in the databae """
     pass
 
 @app.route('/delete', methods=['DELETE'])
 def delete():
     """ FILL IN THIS FUNCTION """
+    """ This method deleted a todo in the database. """
+    """ It receives a todoid, and deletes the corresponding row in
+    the database """
     pass
 
 if __name__ == "__main__":
