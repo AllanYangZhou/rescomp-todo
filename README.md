@@ -46,4 +46,4 @@ We now create a new virtualenv with `virtualenv todo-app` (you may call it whate
 <a name="running"></a>
 ## Running your app
 
-Now that everything's installed, you can run your app. To do so, you'll need to activate your virtualenv (if you don't, python will try to find the flask framework but won't know where to look). Then, `cd` into your project directory (`~/rescomp-todo` in this example) and run the server with `python app.py`. You should be able to view the app by launching a web browser and navigating to `localhost:5000`.
+Now that everything's installed, you can run your app. To do so, you'll need to activate your virtualenv (if you don't, python will try to find the flask framework but won't know where to look). Then, `cd` into your project directory (`~/rescomp-todo` in this example) and run the server with `python todo.py`. You should be able to view the app by launching a web browser and navigating to `localhost:5000`.
