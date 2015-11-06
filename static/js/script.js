@@ -10,16 +10,14 @@ function updateItem() {
         var id = this.parentNode.id;
         var status = this.checked ? 1 : 0;
         $.ajax({
-            url: "/update",
+            url: "", // PUT ITEM URL HERE
             type: "POST",
-            data: JSON.stringify({"id": id, "status": status}),
+            data: "", // REPLACE WITH NECESSARY DATA FOR SERVER
             contentType: "application/json; charset=utf-8",
             dataType: "html",
             timeout: 2000,
             success: function() {
-                reloadList();
-                clearErrorBox();
-                console.log("Successfully update item: " + id);
+              // WRITE WHAT TO DO WHEN THE REQUEST IS SUCCESSFUL
             },
             error: function(e, msg, type) {
                 message = "Failed to update item '"+id+"': "+msg
@@ -35,17 +33,14 @@ $(function() {
   $("#add").on("click", function() {
     var description = $("#todo_input").val();
     $.ajax({
-      url: "/add",
+      url: "", // PUT ITEM ADD URL HERE
       type: "POST",
-      data: JSON.stringify({"description": description}),
+      data: "", // REPLACE WITH NECESSARY DATA FOR SERVER
       contentType: "application/json; charset=utf-8",
       dataType: "",
       timeout: 2000,
       success: function() {
-          reloadList();
-          clearErrorBox();
-          console.log("Successfully added item: " + description);
-          $("#todo_input").val("");
+        // WRITE WHAT TO DO WHEN THE REQUEST IS SUCCESSFUL
       },
       error: function(e, msg, type) {
           message = "Failed to add item '"+description+"': "+msg
@@ -96,14 +91,13 @@ function removeHandler() {
     $(".remove-button").on("click", function() {
         var id = this.parentNode.id;
         $.ajax({
-            url: "/delete",
+            url: "", // PUT DELETE URL HERE
             type: "DELETE",
-            data: JSON.stringify({"id": id}),
+            data: "", // REPLACE WITH NECESSARY DATA FOR SERVER
             contentType: "application/json; charset=utf-8",
             dataType: "html",
             success: function() {
-                reloadList();
-                clearErrorBox();
+              // WRITE WHAT TO DO IF THE REQUEST IS SUCCESSFUL
             },
             error: function(e, msg, type) {
                 message = "Failed to remove item '"+id+"': "+msg
